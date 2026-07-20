@@ -1,0 +1,11 @@
+.text-color {
+    color: gold;
+    font-size: 2rem;
+}
+
+.hero {
+    height: 60dvh;
+    background-image: url("../images/about2.jpg");
+    background-size: cover;
+    background-position: center;
+}

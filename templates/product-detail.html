@@ -1,0 +1,36 @@
+{% extends "common.html" %}
+    {% block title %}G-store {{product.title}}{% endblock title %}
+    {% block content %}
+    
+    <div>
+        <div class=" col-md-6 m-auto my-4" style="">        
+            {% for img_object in product.images.all %}
+                {% if img_object.is_cover %}
+                    <img src="{{img_object.image.url}}" class="card-img-top" alt="...">
+                {% endif %}
+            {% endfor %}
+            <div class="d-flex gap-2 my-2">
+                {% for img_object in product.images.all %}
+                    <img src="{{img_object.image.url}}" height="70">
+                {% endfor %}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{product.title}}</h5>
+                <p class="card-text">{{product.description}}</p>
+                <p class="card-text d-flex justify-content-between">
+                    <b>#{{product.price}}</b>
+                    <b>#{{product.quantity}} Left</b>
+                </p>
+                <a href="#" class="btn btn-primary">Add to cart</a>
+            </div>
+            <h4 class="mt-2">Specifications</h4>
+            <ul class="container-fluid mt-2">
+                {% for spec_obj in product.specifications.all %}
+                    <li><b>{{spec_obj.key}}: </b>{{spec_obj.value}}</li>
+                
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endblock content %}
+    

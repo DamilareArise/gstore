@@ -1,0 +1,35 @@
+{% extends "common.html" %}
+    {% block title %}G-store products{% endblock title %}
+    {% block content %}
+    <section class="container py-2">
+            <h3 class="my-2 text-center">Products Catalog</h3>
+            
+            <div class="row">
+                {% for product in products %}
+                <div class="col col-md-3">
+                    <a href="{% url "product-detail" product.id %}" class="text-decoration-none text-black">
+                    <div class="card" style="width: 18rem;">
+                        
+                        {% for img_object in product.images.all %}
+                            {% if img_object.is_cover %}
+                                <img src="{{img_object.image.url}}" class="card-img-top" alt="...">
+                            {% endif %}
+                        {% endfor %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.title}}</h5>
+                            <p class="card-text">{{product.description|truncatewords:10}}</p>
+                            <p class="card-text d-flex justify-content-between">
+                                <b>#{{product.price}}</b>
+                                <b>#{{product.quantity}} Left</b>
+                            </p>
+                            <a href="#" class="btn btn-primary">Add to cart</a>
+                        </div>
+                    </div>
+                    </a>             
+                </div>
+                {% endfor %}
+                
+            </div>
+        </section>
+    {% endblock content %}
+    
