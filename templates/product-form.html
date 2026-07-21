@@ -1,0 +1,24 @@
+{% extends "common.html" %}
+    {% block title %}G-Store{% endblock title %}
+    {% load static %}
+    {% block content %}
+        
+        <form action="" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <input type="text" placeholder="Title" name="title">
+            <input type="number" placeholder="Price" name="price">
+            <input type="number" placeholder="Quantity" name="quantity">
+            <textarea name="description" id="" placeholder="Description"></textarea>
+            <select name="brand" id="">
+
+                <option value="">---------</option>
+                {% for brand in brands %}
+                <option value="{{brand.id}}">{{brand.name}}</option>
+                {% endfor %}
+            </select>
+
+            <button>Submit</button>
+
+        </form>
+
+    {% endblock %}

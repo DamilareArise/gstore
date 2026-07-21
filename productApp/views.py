@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from .models import Product, ProductImages
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Product, ProductImages, Brand
 
 # Create your views here.
 
@@ -99,3 +99,35 @@ def productDetail(request, product_id):
             "product": product
         }
     )
+    
+
+def addProduct(request):
+    brands = Brand.objects.all()
+    if request.method == 'POST':
+        data = request.POST
+        title = data.get('title')
+        description = data.get('description')
+        price = data.get('price')
+        quantity = data.get('quantity')
+        brand_id = data.get('brand')
+        
+        
+        brand = get_object_or_404(Brand, id=brand_id)
+        Product.objects.create(
+            title = title,
+            price = price,
+            quantity = quantity,
+            description = description,
+            brand = brand
+        )
+        
+        return redirect('add-product')
+    
+    else:
+        return render(
+            request,
+            template_name="product-form.html",
+            context={
+                "brands": brands
+            }
+        )
