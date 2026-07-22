@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, ProductImages, Brand
+from .forms import ProductForm, BrandForm, CategoryForm
 
 # Create your views here.
 
@@ -102,32 +103,60 @@ def productDetail(request, product_id):
     
 
 def addProduct(request):
-    brands = Brand.objects.all()
     if request.method == 'POST':
-        data = request.POST
-        title = data.get('title')
-        description = data.get('description')
-        price = data.get('price')
-        quantity = data.get('quantity')
-        brand_id = data.get('brand')
+        # data = request.POST
+        # title = data.get('title')
+        # description = data.get('description')
+        # price = data.get('price')
+        # quantity = data.get('quantity')
+        # brand_id = data.get('brand')
         
         
-        brand = get_object_or_404(Brand, id=brand_id)
-        Product.objects.create(
-            title = title,
-            price = price,
-            quantity = quantity,
-            description = description,
-            brand = brand
-        )
+        # brand = get_object_or_404(Brand, id=brand_id)
+        # Product.objects.create(
+        #     title = title,
+        #     price = price,
+        #     quantity = quantity,
+        #     description = description,
+        #     brand = brand
+        # )
         
+        
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save()
+        
+            return redirect('product-detail', product_id=product.id)
         return redirect('add-product')
     
     else:
+        form = ProductForm()
+        brand_form = BrandForm()
+        category_form = CategoryForm()
         return render(
             request,
             template_name="product-form.html",
             context={
-                "brands": brands
-            }
+                "form": form,
+                "brand_form": brand_form,
+                "category_form": category_form
+            }   
         )
+        
+
+def addBrand(request):
+    if request.method == 'POST':
+        brand_form = BrandForm(request.POST)
+        if brand_form.is_valid():
+            brand_form.save()
+        
+    return redirect('add-product')
+
+
+def addCategory(request):
+    if request.method == 'POST':
+        category_form = CategoryForm(request.POST)
+        if category_form.is_valid():
+            category_form.save()
+        
+    return redirect('add-product')

@@ -3,7 +3,8 @@
     {% block content %}
     
     <div>
-        <div class=" col-md-6 m-auto my-4" style="">        
+        <div class=" col-md-6 m-auto my-4" style=""> 
+            <a href="" class="text-black">Add Image</a>       
             {% for img_object in product.images.all %}
                 {% if img_object.is_cover %}
                     <img src="{{img_object.image.url}}" class="card-img-top" alt="...">
@@ -24,6 +25,7 @@
                 <a href="#" class="btn btn-primary">Add to cart</a>
             </div>
             <h4 class="mt-2">Specifications</h4>
+            <a href="" class="text-black">Add Specification</a>
             <ul class="container-fluid mt-2">
                 {% for spec_obj in product.specifications.all %}
                     <li><b>{{spec_obj.key}}: </b>{{spec_obj.value}}</li>

@@ -2,10 +2,12 @@
     {% block title %}G-Store{% endblock title %}
     {% load static %}
     {% block content %}
+    {% load crispy_forms_tags %}
         
-        <form action="" enctype="multipart/form-data" method="post">
+        <form action="" enctype="multipart/form-data" method="post" class="col-md-4 m-auto border p-3 my-4">
+            <h3 class="text-center my-2">Product Form</h3>
             {% csrf_token %}
-            <input type="text" placeholder="Title" name="title">
+            {% comment %} <input type="text" placeholder="Title" name="title">
             <input type="number" placeholder="Price" name="price">
             <input type="number" placeholder="Quantity" name="quantity">
             <textarea name="description" id="" placeholder="Description"></textarea>
@@ -15,10 +17,67 @@
                 {% for brand in brands %}
                 <option value="{{brand.id}}">{{brand.name}}</option>
                 {% endfor %}
-            </select>
+            </select> {% endcomment %}
+           
+            {{form|crispy}}
 
-            <button>Submit</button>
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-primary">Submit</button>
+                <a href="?" class="text-black" data-bs-toggle="modal" data-bs-target="#brandModal">Add Brand</a>
+            </div>
 
         </form>
 
+        <!--Brand Modal -->
+        <div class="modal fade" id="brandModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url "add-brand" %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Brand Form</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    {{brand_form|crispy}}
+                    <div class="ms-auto" style="width: fit-content;">
+                        <a href="?" class="text-black text-end" data-bs-toggle="modal" data-bs-target="#categoryModal">Add Category</a>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+            </div>
+        </div>
+        </div>
+
+
+        <!--Category Modal -->
+        <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url "add-category" %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Category Form</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    {{category_form|crispy}}
+                </div>
+                
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+            </div>
+        </div>
+        </div>
     {% endblock %}
