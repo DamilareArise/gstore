@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, ProductImages, Brand
-from .forms import ProductForm, BrandForm, CategoryForm
+from .forms import ProductForm, BrandForm, CategoryForm, ProductImageForm, ProductSpecificationForm
 
 # Create your views here.
 
@@ -92,12 +92,17 @@ def productView(request):
    
 def productDetail(request, product_id):
     product = Product.objects.prefetch_related('images').prefetch_related('specifications').get(id = product_id)
+    image_form = ProductImageForm()
+    specification_form = ProductSpecificationForm()
+    
     
     return render(
         request,
         template_name="product-detail.html",
         context={
-            "product": product
+            "product": product,
+            "image_form": image_form,
+            "specification_form": specification_form
         }
     )
     
@@ -160,3 +165,31 @@ def addCategory(request):
             category_form.save()
         
     return redirect('add-product')
+
+
+def addProductImage(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    
+    if request.method == 'POST':
+        image_form = ProductImageForm(request.POST, request.FILES)
+        if image_form.is_valid():
+            image = image_form.save(commit=False)
+            image.product = product
+            image.save()
+            
+    return redirect('product-detail', product_id=product.id)
+
+
+
+def addProductSpecification(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    
+    if request.method == 'POST':
+        specification_form = ProductSpecificationForm(request.POST)
+        if specification_form.is_valid():
+            specification = specification_form.save(commit=False)
+            specification.product = product
+            specification.save()
+            
+    return redirect('product-detail', product_id=product.id)
+        

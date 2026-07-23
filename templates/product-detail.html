@@ -1,10 +1,11 @@
 {% extends "common.html" %}
     {% block title %}G-store {{product.title}}{% endblock title %}
     {% block content %}
+    {% load crispy_forms_tags %}
     
     <div>
         <div class=" col-md-6 m-auto my-4" style=""> 
-            <a href="" class="text-black">Add Image</a>       
+            <a href="?" class="text-black"  data-bs-toggle="modal" data-bs-target="#imageModal">Add Image</a>       
             {% for img_object in product.images.all %}
                 {% if img_object.is_cover %}
                     <img src="{{img_object.image.url}}" class="card-img-top" alt="...">
@@ -13,6 +14,8 @@
             <div class="d-flex gap-2 my-2">
                 {% for img_object in product.images.all %}
                     <img src="{{img_object.image.url}}" height="70">
+                    <a href=""><i class="bi bi-trash-fill text-danger"></i></a>
+                 
                 {% endfor %}
             </div>
             <div class="card-body">
@@ -23,15 +26,70 @@
                     <b>#{{product.quantity}} Left</b>
                 </p>
                 <a href="#" class="btn btn-primary">Add to cart</a>
+                <a href="#" class="btn btn-primary">Edit Product</a>
+                <a href="#" class="btn btn-danger">Delete Product</a>
             </div>
             <h4 class="mt-2">Specifications</h4>
-            <a href="" class="text-black">Add Specification</a>
+            <a href="" class="text-black" data-bs-toggle="modal" data-bs-target="#specModal">Add Specification</a>
             <ul class="container-fluid mt-2">
                 {% for spec_obj in product.specifications.all %}
-                    <li><b>{{spec_obj.key}}: </b>{{spec_obj.value}}</li>
+                    <li><b>{{spec_obj.key}}: </b>{{spec_obj.value}}
+                        <a href=""><i class="bi bi-trash-fill text-danger"></i></a>
+                        <a href=""><i class="bi bi-pencil-square"></i></a>
+                    </li>
                 
                 {% endfor %}
             </ul>
+        </div>
+
+
+
+        <!--Image Modal -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url "add-image" product.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Product Image</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    {{image_form|crispy}}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+            </div>
+        </div>
+        </div>
+
+        <!--spec Modal -->
+        <div class="modal fade" id="specModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url "add-specification" product.id %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Specification</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    {{specification_form|crispy}}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+            </div>
+        </div>
         </div>
     </div>
     {% endblock content %}
