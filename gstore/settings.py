@@ -84,11 +84,11 @@ WSGI_APPLICATION = "gstore.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": 'gstore_db',
-        "HOST": '127.0.0.1',
-        "USER": "root",
-        "PASSWORD": "password",
-        "PORT": 3306,
+        "NAME": config('DB_NAME'),
+        "HOST": config('DB_HOST'),
+        "USER": config('DB_USER'),
+        "PASSWORD": config('DB_PASSWORD'),
+        "PORT": config('DB_PORT'),
         "OPTIONS": {
             "autocommit": True
         }
