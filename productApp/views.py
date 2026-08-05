@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, ProductImages, Brand
 from .forms import ProductForm, BrandForm, CategoryForm, ProductImageForm, ProductSpecificationForm
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
 
@@ -55,6 +56,9 @@ products = [
         },
     ]
     
+def user_is_staff(user):
+    return user.is_authenticated and user.is_staff    
+    
 
 def homeView(request):
     # products = Product.objects.all().order_by("?")
@@ -106,7 +110,10 @@ def productDetail(request, product_id):
         }
     )
     
-
+    
+    
+# @login_required
+@user_passes_test(user_is_staff)
 def addProduct(request):
     if request.method == 'POST':
         # data = request.POST
@@ -148,7 +155,7 @@ def addProduct(request):
             }   
         )
         
-
+@user_passes_test(user_is_staff)
 def addBrand(request):
     if request.method == 'POST':
         brand_form = BrandForm(request.POST)
@@ -157,7 +164,7 @@ def addBrand(request):
         
     return redirect('add-product')
 
-
+@user_passes_test(user_is_staff)
 def addCategory(request):
     if request.method == 'POST':
         category_form = CategoryForm(request.POST)
@@ -166,7 +173,7 @@ def addCategory(request):
         
     return redirect('add-product')
 
-
+@user_passes_test(user_is_staff)
 def addProductImage(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     
@@ -180,7 +187,7 @@ def addProductImage(request, product_id):
     return redirect('product-detail', product_id=product.id)
 
 
-
+@user_passes_test(user_is_staff)
 def addProductSpecification(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     

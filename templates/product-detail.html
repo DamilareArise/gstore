@@ -5,7 +5,9 @@
     
     <div>
         <div class=" col-md-6 m-auto my-4" style=""> 
-            <a href="?" class="text-black"  data-bs-toggle="modal" data-bs-target="#imageModal">Add Image</a>       
+            {% if request.user.is_staff %}
+            <a href="?" class="text-black"  data-bs-toggle="modal" data-bs-target="#imageModal">Add Image</a> 
+            {% endif %}      
             {% for img_object in product.images.all %}
                 {% if img_object.is_cover %}
                     <img src="{{img_object.image.url}}" class="card-img-top" alt="...">
@@ -14,8 +16,9 @@
             <div class="d-flex gap-2 my-2">
                 {% for img_object in product.images.all %}
                     <img src="{{img_object.image.url}}" height="70">
+                    {% if request.user.is_staff %}
                     <a href=""><i class="bi bi-trash-fill text-danger"></i></a>
-                 
+                    {% endif %}
                 {% endfor %}
             </div>
             <div class="card-body">
@@ -26,16 +29,22 @@
                     <b>#{{product.quantity}} Left</b>
                 </p>
                 <a href="#" class="btn btn-primary">Add to cart</a>
+                {% if request.user.is_staff %}
                 <a href="#" class="btn btn-primary">Edit Product</a>
                 <a href="#" class="btn btn-danger">Delete Product</a>
+                {% endif %}
             </div>
             <h4 class="mt-2">Specifications</h4>
+            {% if request.user.is_staff %}
             <a href="" class="text-black" data-bs-toggle="modal" data-bs-target="#specModal">Add Specification</a>
+            {% endif %}
             <ul class="container-fluid mt-2">
                 {% for spec_obj in product.specifications.all %}
                     <li><b>{{spec_obj.key}}: </b>{{spec_obj.value}}
+                        {% if request.user.is_staff %}
                         <a href=""><i class="bi bi-trash-fill text-danger"></i></a>
                         <a href=""><i class="bi bi-pencil-square"></i></a>
+                        {% endif %}
                     </li>
                 
                 {% endfor %}

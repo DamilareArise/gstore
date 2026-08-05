@@ -1,0 +1,69 @@
+{% extends "common.html" %}
+    {% block title %}G-store{% endblock title %}
+    {% block content %}
+    {% load crispy_forms_tags %}
+
+        <style>
+            .bg-image {
+                background-size: cover;
+                background-position: center;
+                height: 200px;
+            }
+        </style>
+
+        <div class="col-md-6 row my-5 mx-auto border shadow-sm p-3" style="min-height: 30dvh">
+            {% if profile.profile_picture %}
+            <div class="col-md-4 bg-image" style="background-image: url('{{profile.profile_picture.url}}');"></div>
+            {% else %}
+            <div class="col-md-4 h-100 bg-image"
+                style="background-image: url('https://th.bing.com/th/id/R.f6f9bb7836e7652e98cb811351f10102?rik=SNsIkH%2brdq%2bCNA&pid=ImgRaw&r=0');">
+            </div>
+            {% endif %}
+            <div class="col-md-8">
+                <div class="container h-100 d-flex flex-column gap-3">
+                    <div>
+                        <b>Fullname: </b> <span>{{profile.user.first_name}} {{profile.user.last_name}}</span>
+                    </div>
+                    <div>
+                        <b>Email: </b> <span>{{profile.user.email}}</span>
+                    </div>
+                    <div>
+                        <b>Address: </b> <span>{{profile.address}}</span>
+                    </div>
+                    <div>
+                        <b>Role(s): </b>
+                        {% for role in profile.role.all %}
+                        <span>{{role}}</span>,
+                        {% endfor %}
+                    </div>
+                    <a href="" class="btn btn-dark col-2" data-bs-toggle="modal"
+                        data-bs-target="#editProfile">Edit</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Brand Modal -->
+        <div class="modal fade" id="editProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url "profile" %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Profile Form</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    {{user_form|crispy}}
+                    {{profile_form|crispy}}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    {% endblock %}

@@ -1,0 +1,22 @@
+{% extends "common.html" %}
+    {% block title %}G-Store{% endblock title %}
+    {% load static %}
+    {% block content %}
+    {% load crispy_forms_tags %}
+        
+        <form action="" enctype="multipart/form-data" method="post" class="rounded col-md-4 m-auto border p-3 my-4">
+            <h3 class="text-center my-2">Signup Form</h3>
+            {% csrf_token %}
+
+            {{form|crispy}}
+
+            <button class="btn btn-primary">Signup</button>
+            <hr>
+            <div class="d-flex justify-content-between">
+                <p class="text-black">Already have account</p>
+                <a href="" class="text-black">Login</a>
+            </div>
+
+        </form>
+
+    {% endblock %}
