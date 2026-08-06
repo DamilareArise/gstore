@@ -1,6 +1,9 @@
 {% extends "common.html" %}
     {% block title %}G-store products{% endblock title %}
     {% block content %}
+    {% load humanize %}
+
+
     <section class="container py-2">
             {% if request.user.is_staff %}
             <a href="{% url "add-product" %}" class="text-black">Add product</a>
@@ -23,8 +26,8 @@
                             <h5 class="card-title">{{product.title}}</h5>
                             <p class="card-text">{{product.description|truncatewords:10}}</p>
                             <p class="card-text d-flex justify-content-between">
-                                <b>#{{product.price}}</b>
-                                <b>#{{product.quantity}} Left</b>
+                                <b>₦{{product.price|intcomma}}</b>
+                                <b>{{product.quantity}} Left</b>
                             </p>
                             <a href="#" class="btn btn-primary">Add to cart</a>
                         </div>

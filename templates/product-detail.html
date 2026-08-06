@@ -2,6 +2,7 @@
     {% block title %}G-store {{product.title}}{% endblock title %}
     {% block content %}
     {% load crispy_forms_tags %}
+    {% load humanize %}
     
     <div>
         <div class=" col-md-6 m-auto my-4" style=""> 
@@ -25,8 +26,8 @@
                 <h5 class="card-title">{{product.title}}</h5>
                 <p class="card-text">{{product.description}}</p>
                 <p class="card-text d-flex justify-content-between">
-                    <b>#{{product.price}}</b>
-                    <b>#{{product.quantity}} Left</b>
+                    <b>₦{{product.price|intcomma}}</b>
+                    <b>{{product.quantity}} Left</b>
                 </p>
                 <a href="#" class="btn btn-primary">Add to cart</a>
                 {% if request.user.is_staff %}

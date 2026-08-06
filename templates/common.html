@@ -22,11 +22,6 @@
                 <a class="nav-link active" aria-current="page" href="{% url "home" %}">Home</a>
                 <a class="nav-link" href="{% url "products" %}">Products</a>
                 <a class="nav-link" href="#">Pricing</a>
-                {% if request.user.is_authenticated %}
-                <form action="{% url "logout" %}" method="post">
-                    {% csrf_token %}
-                    <button class="nav-link">Logout</button>
-                </form>
                 <div class="dropdown">
                     <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Hi, {{request.user.username}}
@@ -43,10 +38,6 @@
                     </ul>
                     </div>
                 </div>
-                {% else %}
-                <a class="nav-link" href="{% url "login" %}">Login</a>
-                {% endif %}
-
             </div>
         </div>
     </nav>

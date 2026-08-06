@@ -2,6 +2,7 @@
     {% block title %}G-Store{% endblock title %}
     {% load static %}
     {% block content %}
+    {% load humanize %}
 
         <section class="hero">
 
@@ -24,8 +25,8 @@
                             <h5 class="card-title">{{product.title}}</h5>
                             <p class="card-text">{{product.description|truncatewords:10}}</p>
                             <p class="card-text d-flex justify-content-between">
-                                <b>#{{product.price}}</b>
-                                <b>#{{product.quantity}} Left</b>
+                                <b>₦{{product.price|intcomma}}</b>
+                                <b>{{product.quantity}} Left</b>
                             </p>
                             <a href="#" class="btn btn-primary">Add to cart</a>
                         </div>
