@@ -28,7 +28,7 @@
                                 <b>₦{{product.price|intcomma}}</b>
                                 <b>{{product.quantity}} Left</b>
                             </p>
-                            <a href="#" class="btn btn-primary">Add to cart</a>
+                            <a href="{% url "add-to-cart" product.id %}" class="btn btn-primary">Add to cart</a>
                         </div>
                     </div>
                     </a>
