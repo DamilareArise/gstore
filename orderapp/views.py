@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from productApp.models import Product
-from .models import Cart, CartItem
+from .models import Cart, CartItem, Order, OrderItem
 from .cart_service import add_to_db
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -97,3 +98,52 @@ def remove_item(request, product_id):
             request.session["cart"] = my_cart
     
     return redirect('cart')
+
+
+@login_required
+def all_orders(request):
+    orders = (
+        Order.objects
+        .filter(user=request.user)
+        .prefetch_related('order_items__product')
+        .order_by('-created_at')
+    )
+    return render(
+        request,
+        template_name="orderapp/all_orders.html",
+        context={
+            "orders": orders
+        }
+    )
+    
+
+@login_required 
+def checkout(request):
+    cart = get_object_or_404(Cart, user=request.user)
+    cart_items = cart.cart_items.all()
+    if not cart_items:
+        return redirect('cart')  # Redirect to cart if it's empty
+    order = Order.objects.create(
+        user=request.user,
+        total_amount=sum(item.quantity * item.product.price for item in cart_items),
+        payment_status='pending'
+    )
+    
+    for item in cart_items:
+        OrderItem.objects.create(
+            order=order,
+            product=item.product,
+            quantity=item.quantity,
+            item_price=item.product.price
+        )
+        
+    # Clear the cart after checkout
+    cart.cart_items.all().delete()
+    
+    return render(
+        request,
+        template_name="orderapp/checkout.html",
+        context={
+            "order": order
+        }
+    )
